@@ -1,0 +1,451 @@
+<!doctype html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Git Crash Course</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/custom.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+  </head>
+
+  <body>
+    <div class="reveal">
+
+      <div class="slides">
+        <img src="img/kantar-logo.jpg" class="logo">
+
+        <section id="front-matter">
+          <div class="main-title">
+            <h2>Git Crash Course</h2>
+            <p>Kantar Marketing Sciences</p>
+            <p>Jhosse Paul Márquez Ruíz</p>
+          </div>
+        </section>
+
+        <section id="requisitos">
+          <h2>Requisitos</h2>
+          <ul>
+            <li class="fragment">
+              Instalar <a href="https://git-scm.com/download/win">Git</a>
+            </li>
+            <li class="fragment">
+              Tener una frikicuenta en <a href="http://github.com/">Github</a>
+              (Es más divertido que FB e Instagram juntos)
+            </li>
+            <li class="fragment">Usar una interfaz de linea de comandos (Fear no evil)</li>
+            <li class="fragment">Muchas ganas de leer y aprender (code, code, code...)</li>
+          </ul>
+          <img src="img/studying.png" class="image-lg fragment">
+        </section>
+
+        <section id="vocabulario">
+          <section class="section">
+            <h1>Vocabulario</h1>
+          </section>
+
+          <section>
+            <h2>¿Qué es Git?</h2>
+
+            <blockquote class="fragment" cite="https://es.wikipedia.org/wiki/Git">
+              Git (pronunciado "guit" ) es un software de
+              <b class="fragment highlight-red">control de versiones</b> diseñado por
+              Linus Torvalds, pensando en la eficiencia y la confiabilidad del mantenimiento
+              de versiones de aplicaciones cuando éstas tienen un gran número de archivos de
+              <b class="fragment highlight-red">código fuente</b>.
+              <footer>- Según Wikipedia</footer>
+            </blockquote>
+
+            <h2 class="fragment">¿Qué es Github?</h2>
+
+            <blockquote class="fragment" cite="https://es.wikipedia.org/wiki/Github">
+              GitHub es una plataforma de desarrollo colaborativo para alojar
+              proyectos utilizando el sistema de
+              <b class="highlight-red fragment">control de versiones</b> Git.
+              <footer>- Según Wikipedia</footer>
+            </blockquote>
+
+            <img src="./img/confused.png" class="fragment image-md">
+
+          </section>
+
+          <section>
+            <h2>¿Qué es un sistema de control de versiones?</h2>
+
+            <blockquote>
+              Version control is a system that records changes to a file
+              or set of files over time so that you can recall specific
+              versions  later
+              <footer>- Pro Git (2016)</footer>
+            </blockquote>
+
+            <img src="img/tesis.jpg" class="fragment image-lg">
+          </section>
+
+          <section>
+            <p>
+              En pocas palabras, si queremos dar un seguimiento a los cambios
+              que hagamos sobre archivos de un proyecto y poder mantener
+              diferentes versiones del mismo en diferentes computadoras y con un
+              equipo colaborativo, es necesario usar un control de versiones.
+            </p>
+            <img src="img/cute.png" class="image-lg">
+          </section>
+        </section>
+
+        <section id="git">
+          <section id="git-header">
+            <img src="img/git.png" class="image-lg">
+          </section>
+
+          <section id="introduccion">
+            <h2>¿Como abrir Git?</h2>
+            <p>
+              Hay dos interfaces para Git, una CLI (Command Line Interface)
+              y una GUI (Graphical User Interface). Es posible que estén
+              tentados a usar la GUI, cegados por el temor a adentrarse en la
+              matrix. Hay que ser claro: la GUI ofrece menos de la mitad del
+              potencial que se puede aprovechar de Git. Siempre hay que trabajar
+              Git desde una línea de comandos:
+            </p>
+            <pre>
+              <code>
+                Super -> "Git Bash"
+              </code>
+            </pre>
+          </section>
+
+          <section id="init">
+            <h2>Creando nuestro primer repositorio</h2>
+            <pre>
+              <code class="hljs bash">
+  cd ~                  # Change directory to home (~)
+  mkdir repository      # Make a directory called repository
+  cd repository         # Change directory to repository
+  git init              # Start a brand new git repository
+              </code>
+            </pre>
+
+            <p class="fragment"> Parace que nada ha cambiado, sin embargo: </p>
+
+            <pre class="fragment">
+              <code class="bash hljs">
+  ls -la                # List all (a) files with long (l) format
+              </code>
+            </pre>
+
+            <p class="fragment">
+              Podemos ver una carpeta llamada .git, lo cual nos indica
+              que ya estamos usando Git
+            </p>
+          </section>
+
+          <section id="status-1">
+            <h2>Creando nuestro primer archivo en Git</h2>
+            <pre>
+              <code class="hljs bash">
+  touch my-first-file.txt # Create a new file called my-first-file.txt
+  echo "First line" >> my-first-file.txt # Append "First line" text in the last line of the file
+              </code>
+            </pre>
+            <p class="fragment">
+              Ahora vamos a empezar a usar Git para rastrear los cambios en
+              nuestros archivos. El comando "git status" nos da un resumen de
+              los cambios que hemos efectuado desde nuestro último commit (más
+              sobre esto a continuación)
+            </p>
+            <pre class="fragment">
+              <code class="bash hljs">
+  git status
+              </code>
+            </pre>
+          </section>
+
+          <section id="status-2">
+            <p>
+              Como podemos ver, los archivos nuevos han sido detectados
+              automaticamente. También arroja información relevante:
+            </p>
+
+            <ul>
+              <li class="fragment">El "branch" en el que nos encontramos</li>
+              <li class="fragment">Una lista de archivos "unstaged" o modificados</li>
+              <li class="fragment">Una lista de archivos "untracked" o sin seguimiento</li>
+              <li class="fragment">Una lista de archivos "staged" que podemos hacer permanentes con un commit</li>
+            </ul>
+
+            <p class="fragment">Mucho vocabulario nuevo!!!</p>
+
+            <img src="img/cry.png" class="fragment image-md">
+          </section>
+
+          <section id="lifecycle">
+            <h2>El ciclo de vida del archivo</h2>
+            <img src="img/git-file-lc.png" class="image-lg">
+
+            <p>
+              En Git existen varias fases en el ciclo de vida del archivo:
+            </p>
+
+            <ul>
+              <li class="fragment">Untracked: Sin historia en el repositorio</li>
+              <li class="fragment">Unstaged: Con historia, nodificados</li>
+              <li class="fragment">Staged: Con historia, cambios que queremos mantener</li>
+              <li class="fragment">Committed: Con cambios locales definitivos que cumplen objetivos de desarrollo</li>
+              <li class="fragment">Pushed: Cambios definitivos en un repositorio remoto</li>
+            </ul>
+
+            <p class="fragment">
+              A continuación vamos a ver como podemos migrar archivos de un estado
+              a otro.
+            </p>
+          </section>
+
+          <section id="add">
+            <h2>Staging area</h2>
+            Para dar seguimiento a un archivo usamos:
+            <pre>
+              <code class="hljs bash">
+  git add my-first-file.txt   # Add my-first-file to the staged area
+  git status
+              </code>
+            </pre>
+
+            <p>
+              Algunas variantes
+            </p>
+
+            <pre>
+              <code class="hljs bash">
+  git add .     # Add all untracked and modified files to the repository
+  git add -Av   # Add and list (v = verbose) all (A) untracked and modified files to the repository
+              </code>
+            </pre>
+          </section>
+
+          <section id="commit">
+            <h2>Nuestro primer commit</h2>
+            <p>
+              Después de una cantidad considerable de cambios que cumplen con los
+              objetivos de desarrollo que nos hemos planteado, e.g. un nuevo
+              feature en nuestro paquete o programa, querremos hacer los cambios
+              permanentes. A este milestone se le llama <b>commit</b>. Todos los archivos que
+              se encuentren en el staging area conforman un commit. Los commit
+              siempre van acompañados de un
+              <span class="highlight-blue fragment">commit message</span>,
+              <span class="highlight-red fragment">un timestamp</span>,
+              <span class="highlight-green fragment">un hashkey único</span>
+              <span class="highlight-blue fragment">y el registro del autor de los cambios.</span>
+              Esto lo podemos ver con el comando git log.
+            </p>
+            <pre>
+              <code class="hljs bash">
+  git commit    # Make changes permanent, open editor to write commit message
+  git commit -m "My first commit" # Make changes permanent with the given commit message (m)
+
+  echo "Second line" >> my-first-file.txt
+  git status
+  git add my-first-file.txt
+  git status
+  git commit -m "Second commit"
+  git status
+
+  git log
+  git log --oneline
+              </code>
+            </pre>
+          </section>
+
+          <section id="reset-revert">
+            <p>
+              No ahondaremos mucho en como revertir cambios de un repositorio.
+              Pero aprovechamos para introducir el comando "help" para acceder a
+              la documentación de Git.
+            </p>
+
+            <pre>
+              <code>
+  git help reset # "reset" es el inverso a "add". Regresa en la historia del repositorio
+  git help revert # Crea un commit nuevo con un estado anterior de la historia del repositorio
+  git help checkout # Viajar en el tiempo y el espacio, incluyendo "branches"
+              </code>
+            </pre>
+
+            <img src="img/back-to-the-future.jpg" class="image-lg">
+
+            <p>
+              <a href="https://www.atlassian.com/git/tutorials/resetting-checking-out-and-reverting">
+                Ver en privado (detalles de como regresar en el tiempo)
+              </a>
+            </p>
+          </section>
+
+          <section id="areas">
+            <img src="img/git-areas.png">
+          </section>
+
+          <section id="branches">
+            <h2>Git como un árbol</h2>
+            <p>
+              Además de dar seguimiento a un solo proyecto, Git permite dar
+              seguimiento a variaciones de un mismo proyecto sin salir del mismo
+              repositorio. A cada variación del proyecto se le llama "branch" y se
+              le da un seguimiento independiente hasta que decidamos juntar las
+              ramas.
+            </p>
+            <pre>
+              <code class="hljs bash">
+  git checkout -b test # Create new branch "test"
+  git branch # List branches and current working branch
+
+  touch my-second-file.txt
+  echo "First line" >> my-second-file.txt
+  git add -Av
+  git commit -m "Great feature"
+  git checkout master
+
+  git merge test # Merge changes made in "test" with the current branch
+  git branch -d test # Delete (d) "test" branch
+              </code>
+            </pre>
+          </section>
+
+          <section>
+            <img src="img/git-tree.gif">
+          </section>
+
+          <section>
+            <img src="img/git-complex-tree.jpg">
+          </section>
+
+          <section id="summary">
+            <h2>En resumen...</h2>
+            <pre>
+              <code class="hljs bash">
+  git init
+  git status
+  git log
+
+  git add
+  git commit
+
+  git reset
+  git revert
+
+  git checkout
+  git branch
+              </code>
+            </pre>
+            <h3 class="fragment">Falta Github, no se emocionen</h3>
+          </section>
+        </section>
+
+        <section id="github">
+          <section id="github-header">
+            <img src="img/github.png">
+          </section>
+
+          <section id="colaboracion">
+
+            <p>
+              Git permite una excelente integración de los cambios que hace un equipo
+              a un proyecto. Para poder distribuir el trabajo entre varios
+              colaboradores es necesario un repositorio remoto.
+            </p>
+
+            <p>
+              A esta gran red social de colaboración en el desarrollo de software
+              se le conoce como Github. Hay otras, pero son más aburridas
+            </p>
+            <p>
+               Acá podemos encontrar al mismísimo
+               <a href="https://github.com/hadley"><b>Hadley, Dios, Wickham</b></a>
+            </p>
+          </section>
+
+          <section id="clone">
+            <h2>Nuestro primer repositorio remoto</h2>
+            <p>
+              Crear nuestro primer repositorio remoto es tan sencillo como
+              entrar a nuestro perfil de <a href="https://github.com/">Github</a>
+              y dar click en "New repository". Por el momento, solo indiquémos
+              un nombre y marquémos el checkbox "Initialize this repository
+              with a README". Ahora vamos a clonar nuestro nuevo repositorio.
+              Click en "Clone or download", elegir el método HTTPS y copiar.
+            </p>
+
+            <pre class="fragment">
+              <code class="hljs bash">
+  cd ~
+  git clone https://github.com/JhossePaul/curso_git.git # Clonar esta misma presentación
+  cd curso_git
+              </code>
+            </pre>
+
+            <img src="http://i.giphy.com/90F8aUepslB84.gif" class="image-lg fragment">
+          </section>
+
+          <section class="remote">
+            <p>
+              Ahora tenemos un repositorio Git con todas las capacidades que
+              ya conocemos. Sin embargo, ahora tenemos un área de
+              trabajo más: Github, un repositorio remoto
+            </p>
+            <img src="img/git-remote-areas.png">
+          </section>
+
+          <section id="el-viejo-mete-y-saca">
+            <h2 class="fragment">Un poco del viejo push and pull</h2>
+            <img src="img/pull-push.jpg" class="image-md fragment">
+
+            <pre class="fragment">
+              <code class="hljs bash">
+  echo "Hello, sexy Github World" >> README.md
+  git add README.md
+  git commit -m ":kiss: Sexy commit"
+  git push
+              </code>
+            </pre>
+
+            <p class="fragment">Dentro del mismo Github modifiquemos el archivo README y luego...</p>
+
+            <pre class="fragment">
+              <code class="hljs bash">
+  git pull
+              </code>
+            </pre>
+          </section>
+        </section>
+
+        <section id="despedida">
+          <p>Hasta aquí las aventuras con Octocat por el día de hoy</p>
+          <h2>Continuará</h2>
+
+          <img src="img/hero.jpg" class="image-lg">
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+    <script>
+      // More info https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        history: true,
+        transition: 'convex',
+        // More info https://github.com/hakimel/reveal.js#dependencies
+        dependencies: [
+          { src: 'plugin/markdown/marked.js' },
+          { src: 'plugin/markdown/markdown.js' },
+          { src: 'plugin/notes/notes.js', async: true },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        ]
+      });
+    </script>
+  </body>
+</html>
